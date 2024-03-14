@@ -23,11 +23,15 @@ def secret_route():
         token_information = jwt.decode(token, key="1234", algorithms="HS256")
         token_uid = token_information["uid"]
     except jwt.InvalidSignatureError:
-        return jsonify({"error": "Token Invalido"}), 401
+        return jsonify({"error": "Token Inválido"}), 401
 
     # validação de expiração do token
     except jwt.ExpiredSignatureError:
         return jsonify({"error": "Token Expirado"}), 401
+
+    # Se o token for gerado sem valor de "uid" cai nessa excessão
+    except KeyError as e:
+        return jsonify({"error": "Token Inválido2"}), 401
 
     if int(token_uid) != int(uid):
         return jsonify({"error": "User não permitido"}), 400
@@ -38,10 +42,5 @@ def secret_route():
 # Generate token with auth.
 @route_bp.route("/auth", methods=["POST"])
 def auth_gentoken_route():
-    token = jwt.encode(
-        {"exp": datetime.utcnow() + timedelta(minutes=30), "uid": 12},
-        key="1234",
-        algorithm="HS256",
-    )
 
     return jsonify({"token": token}), 200
