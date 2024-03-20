@@ -26,7 +26,8 @@ class TokenCreator:
     def __encode_token(self, uid: int):
         token = jwt.encode(
             {
-                "exp": datetime.utcnow() + timedelta(minutes=self.__EXP_TIME_MIN),
+                "exp": datetime.now(datetime.UTC)
+                + timedelta(minutes=self.__EXP_TIME_MIN),
                 "uid": uid,
             },
             key=self.__TOKEN_KEY,
