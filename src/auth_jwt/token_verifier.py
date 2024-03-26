@@ -1,10 +1,12 @@
+from functools import wraps
 from flask import jsonify, request
 import jwt
 from .token_handler import token_creator
 
 
-# min: 44:00
 def token_verify(function: callable) -> callable:
+
+    @wraps(function)
     def decorated(*arg, **kwargs):
         # Get Token
         raw_token = request.headers.get("Authorization")
@@ -36,3 +38,5 @@ def token_verify(function: callable) -> callable:
         next_token = token_creator.refresh(token)
 
         return function(next_token, *arg, **kwargs)
+
+    return decorated
