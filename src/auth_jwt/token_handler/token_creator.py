@@ -3,7 +3,6 @@ import jwt
 import time
 
 
-# T: 48:16 min
 class TokenCreator:
     def __init__(self, token_key: str, exp_time_min: int, refresh_time: int):
         self.__TOKEN_KEY = token_key
