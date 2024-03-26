@@ -1,9 +1,9 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import jwt
 import time
 
 
-# T: 38:39 min
+# T: 48:16 min
 class TokenCreator:
     def __init__(self, token_key: str, exp_time_min: int, refresh_time: int):
         self.__TOKEN_KEY = token_key
@@ -26,7 +26,7 @@ class TokenCreator:
     def __encode_token(self, uid: int):
         token = jwt.encode(
             {
-                "exp": datetime.now(datetime.UTC)
+                "exp": datetime.now(timezone.utc)
                 + timedelta(minutes=self.__EXP_TIME_MIN),
                 "uid": uid,
             },

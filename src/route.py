@@ -4,11 +4,10 @@ from .auth_jwt import token_creator, token_verify
 route_bp = Blueprint("route", __name__)
 
 
-# Access with token validate. T-28min
+# Access with token validate.
 @route_bp.route("/secret", methods=["GET"])
 @token_verify
-def secret_route():
-
+def secret_route(token):
     return jsonify({"data": "Mensagem secreta"}), 200
 
 
